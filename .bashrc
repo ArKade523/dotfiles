@@ -17,31 +17,26 @@ alias lah='ls -lah'
 retry_command() {
     local cmd="$1"
     local length=${#cmd}
-    local modified_cmds=()
+    local modified_cmd
 
-    # Generate all possible commands by swapping adjacent characters
+    # Generate possible commands by swapping adjacent characters
     for ((i = 0; i < length - 1; i++)); do
         if [[ ${cmd:i:1} =~ [a-zA-Z] && ${cmd:i+1:1} =~ [a-zA-Z] ]]; then
-            local swapped_cmd="${cmd:0:i}${cmd:i+1:1}${cmd:i:1}${cmd:i+2}"
-            modified_cmds+=("$swapped_cmd")
-        fi
-    done
-
-    # Check each modified command
-    for modified_cmd in "${modified_cmds[@]}"; do
-        # Extract the first word (command) to check if it exists in PATH
-        local executable=$(echo $modified_cmd | awk '{print $1}')
-        if command -v $executable &> /dev/null; then
-            echo "Command failed: $cmd"
-            echo "Found a potential match: $modified_cmd"
-            read -p "Do you want to execute this command? [y/N] " -n 1 confirm
-		    echo # move to a new line
-   	        if [[ $confirm == [yY] || -z $confirm ]]; then
-            	eval "$modified_cmd"
-            	return
-			else
-				break
-        	fi
+            modified_cmd="${cmd:0:i}${cmd:i+1:1}${cmd:i:1}${cmd:i+2}"
+            # Extract the first word (command) to check if it exists in PATH
+            local executable=$(echo $modified_cmd | awk '{print $1}')
+            if command -v $executable &> /dev/null; then
+                echo "Command failed: $cmd"
+                echo "Found a potential match: $modified_cmd"
+                read -p "Do you want to execute this command? [Y/n] " -n 1 confirm
+                echo  # move to a new line
+                if [[ $confirm == [yY] || -z $confirm ]]; then
+                    eval "$modified_cmd"
+                    return
+                else
+                    break
+                fi
+            fi
         fi
     done
 
