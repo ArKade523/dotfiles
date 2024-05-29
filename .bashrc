@@ -35,11 +35,13 @@ retry_command() {
             echo "Command failed: $cmd"
             echo "Found a potential match: $modified_cmd"
             read -p "Do you want to execute this command? [y/N] " -n 1 confirm
-	    echo # move to a new line
-            if [[ $confirm == [yY] || -z $confirm ]]; then
-                eval "$modified_cmd"
-                return
-            fi
+		    echo # move to a new line
+   	        if [[ $confirm == [yY] || -z $confirm ]]; then
+            	eval "$modified_cmd"
+            	return
+			else
+				break
+        	fi
         fi
     done
 
