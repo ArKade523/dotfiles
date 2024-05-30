@@ -1,9 +1,9 @@
 # Bash prompt
 export PS1='$(git branch &>/dev/null; if [ $? -eq 0 ]; then \
-echo "\[\e[1;36m\]\u@${HOSTNAME:0:10}\[\e[0m\]: \W [\[\e[34m\]$(git branch | grep ^* | sed s/\*\ //)\[\e[0m\]\
+echo "\[\e[1;36m\]\u@${HOSTNAME:0:10}\[\e[0m\]:\[\e[32m\] \W\[\e[0m\] [\[\e[34m\]$(git branch | grep ^* | sed s/\*\ //)\[\e[0m\]\
 $(echo `git status` | grep "nothing to commit" > /dev/null 2>&1; if [ "$?" -ne "0" ]; then \
 echo "\[\e[1;31m\]*\[\e[0m\]"; fi)] \$ "; else \
-echo "\[\e[1;36m\]\u@${HOSTNAME:0:10}\[\e[0m\]: \W \$ "; fi )'
+echo "\[\e[1;36m\]\u@${HOSTNAME:0:10}\[\e[0m\]: \[\e[32m\] \W\[\e[0m\] \$ "; fi )'
 
 
 # Aliases
@@ -55,7 +55,7 @@ DOTFILES_DIR="$HOME/.dotfiles"
 if ! cmp -s "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"; then
     echo ".bashrc files differ. Running setup script."
     bash "$DOTFILES_DIR/setup.sh"
-	if -f "$HOME/.bashrc"; then
+	if [ -f "$HOME/.bashrc" ]; then
 		source "$HOME/.bashrc"
 	fi
 fi
