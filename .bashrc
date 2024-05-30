@@ -47,3 +47,27 @@ retry_command() {
 trap 'last_command=$this_command; this_command=$BASH_COMMAND' DEBUG
 trap '[[ $? -ne 0 ]] && retry_command "$last_command"' ERR
 
+# Check if this file is different from the one in ~/.dotfiles. Run ~/.dotfiles/setup.sh if so
+# Path to your dotfiles directory
+DOTFILES_DIR="$HOME/.dotfiles"
+
+# Check if .bashrc in the home directory is different from the one in .dotfiles
+if ! cmp -s "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"; then
+    echo ".bashrc files differ. Running setup script."
+    bash "$DOTFILES_DIR/setup.sh"
+	if -f "$HOME/.bashrc"; then
+		source "$HOME/.bashrc"
+	fi
+fi
+
+# Install bash completion
+if [ ! -d "$HOME/bash_completion.d" ]; then
+	mkdir "$HOME/bash_completion.d"
+fi
+
+if [ ! -f "$HOME/bash_completion.d/git" ]; then 
+	curl -o ~/bash_completion.d/git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+	source "$HOME/bash_completion.d/git"
+fi
+
+	
