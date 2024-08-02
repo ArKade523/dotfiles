@@ -3,5 +3,6 @@ require('keybinds')
 require('plugins')
 require('colorscheme')
 require('lsp')
-require('telescope')
-
+require('telescope-config')
+require('nvchad.autocmds')
+require('nvchad.tabufline.lazyload')

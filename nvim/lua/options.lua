@@ -2,7 +2,10 @@
 vim.opt.clipboard = 'unnamedplus'   -- use system clipboard 
 vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
 vim.opt.mouse = 'a'                 -- allow the mouse to be used in Nvim
-vim.opt.shell = '"C:/Program Files/Git/bin/bash"'   -- use git bash as the default shell
+vim.opt.shell = 'C:/PROGRA~1/Git/bin/bash.exe'   -- use git bash as the default shell
+vim.opt.shellcmdflag = '-c'
+vim.opt.shellquote = ''
+vim.opt.shellxquote = ''
 vim.g.mapleader = ' '             -- use <Space> as <Leader>
 
 -- Tab
@@ -27,3 +30,5 @@ vim.opt.hlsearch = true		        -- highlight matches
 vim.opt.ignorecase = true           -- ignore case in searches by default
 vim.opt.smartcase = true            -- but make it case sensitive if an uppercase is entered
 
+-- Buffers
+vim.t.bufs = {}

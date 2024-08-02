@@ -41,10 +41,59 @@ require("lazy").setup({
 	"williamboman/mason.nvim",
 	"williamboman/mason-lspconfig.nvim",
 	"neovim/nvim-lspconfig",
+    {
+        "p00f/clangd_extensions.nvim", 
+        config = function()
+            require("clangd_extensions").setup({
+                server = {
+                    cmd = { "clangd",
+                            "--query-driver='wsl \'~/.toolchain/tms570/v0.0.0/bin/armeb-none-eabi-gcc\''"
+                    },
+                    on_attach = on_attach
+                }
+            })
+        end
+    },
     -- Telescope
     {
         "nvim-telescope/telescope.nvim", tag = '0.1.8',
-        dependencies = { "nvim-lua/plenary.nvim" }
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    -- Treesitter
+    {
+        "nvim-treesitter/nvim-treesitter",
+        lazy = false,
+        build = ":TSUpdate",
+        config = function()
+            local configs = require("nvim-treesitter.configs")
+            local install = require("nvim-treesitter.install")
+
+            configs.setup({
+                ensure_installed = { "c", "lua", "python" },
+                sync_install = false,
+                indent = { enable = true },
+                highlight = { enable = true },
+            })
+            install.prefer_git = false
+            install.compilers = { "wsl '~/.toolchain/tms570/v0.0.0/bin/armeb-none-eabi-gcc'", "gcc", "clang" }
+        end
+    }, 
+    -- Nvim Tree 
+    { 
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        lazy = false,
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            require("nvim-tree").setup({
+                filters = {
+                    git_ignored = false,
+                    dotfiles = false,
+                }
+            })
+        end
     }
 })
 
